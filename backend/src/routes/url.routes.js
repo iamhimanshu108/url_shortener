@@ -26,15 +26,35 @@ router.post("/", async function(req, res) {
 
     }
 
-    const shortCode = generateCode();
+    const code = generateCode();
 
-    const newUrl = new urlModel({
-        url,
-        shortCode,
+    const newUrl = await urlModel.create({
+       originalUrl: url,
+       shortCode: code,
     });
 
-    await newUrl.save();
-    return res.status(201).json(newUrl);
+    return res.status(201).json({
+        message: "URL shortened successfully",
+        data: {
+            originalUrl: newUrl.originalUrl,
+            shortCode: newUrl.shortCode,
+            shortUrl: `${req.protocol}://${req.get("host")}/${newUrl.shortCode}`,
+        },
+    });
+    
+
+    
 });
 
+
+
+
+
+router.get("/", async function(req,res){
+    const urls = await urlModel.find();
+    return res.status(200).json({
+        message: "URLs retrieved successfully",
+        data: urls,
+    });
+})
 export default router;

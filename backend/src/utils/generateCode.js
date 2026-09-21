@@ -13,4 +13,4 @@ const generateCode = () => {
     return shortCode;
 }
 
-    
+export default generateCode;
