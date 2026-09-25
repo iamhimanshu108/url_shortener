@@ -70,7 +70,7 @@ router.delete("/:id", async function(req, res){
         return res.status(404).json({ message: "URL not found" });
     }
 
-    await urlModel.findOneAndDelete(id);
+    await urlModel.findByIdAndDelete(id);
 
     return res.status(200).json({
         message: "URL deleted successfully",
